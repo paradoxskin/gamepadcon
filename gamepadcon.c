@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 typedef struct {
     unsigned int type;
@@ -24,7 +26,7 @@ void* listen(void*);
 static int running;
 
 int main() {
-    int lock_fd = open(lock_file, O_CREAT | O_EXCL | O_RDWR, 0666);
+    int lock_fd = mkfifo(lock_file, 0666);
     if (lock_fd == -1) {
         lock_fd = open(lock_file, O_WRONLY);
         const char* close_signal = "233";
